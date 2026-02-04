@@ -127,18 +127,18 @@ export function DesktopSpeedMenu({
             if (openUpward) {
                 setMenuPosition({
                     top: top - 10,
-                    left: left + buttonWidth,
+                    left: left, // In rotated mode, align to left side of button (no horizontal shift)
                     maxHeight: `${maxHeight}px`,
                     openUpward: true,
-                    align: 'right'
+                    align: 'left' // No transform needed in rotated mode
                 });
             } else {
                 setMenuPosition({
                     top: top + buttonHeight + 10,
-                    left: left + buttonWidth,
+                    left: left,
                     maxHeight: `${maxHeight}px`,
                     openUpward: false,
-                    align: 'right'
+                    align: 'left'
                 });
             }
         }

@@ -157,18 +157,18 @@ export function DesktopMoreMenu({
             if (openUpward) {
                 setMenuPosition({
                     top: top - 10,
-                    left: left + buttonWidth,
+                    left: left, // Align to left side in rotated mode (no horizontal shift needed)
                     maxHeight: `${maxHeight}px`,
                     openUpward: true,
-                    align: 'right'
+                    align: 'left' // No transform needed in rotated mode
                 });
             } else {
                 setMenuPosition({
                     top: top + buttonHeight + 10,
-                    left: left + buttonWidth,
+                    left: left,
                     maxHeight: `${maxHeight}px`,
                     openUpward: false,
-                    align: 'right'
+                    align: 'left'
                 });
             }
         }
@@ -208,12 +208,16 @@ export function DesktopMoreMenu({
             ref={menuRef}
             className={`absolute z-[2147483647] bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] rounded-[var(--radius-2xl)] border border-[var(--glass-border)] shadow-[var(--shadow-md)] p-1.5 sm:p-2 w-fit min-w-[200px] sm:min-w-[240px] animate-in fade-in zoom-in-95 duration-200 overflow-y-auto`}
             style={{
-                top: `${menuPosition.top}px`, // Always use absolute top
+                top: isRotated
+                    ? (menuPosition.openUpward ? 'auto' : `${menuPosition.top}px`)
+                    : `${menuPosition.top}px`, // Absolute top for viewport mode
+                bottom: isRotated
+                    ? (menuPosition.openUpward ? `calc(100% - ${menuPosition.top}px + 10px)` : 'auto')
+                    : 'auto',
                 left: `${menuPosition.left}px`,
                 // If aligned right, shift left by 100% of own width. If aligned left, stay at 0.
                 transform: menuPosition.align === 'right' ? 'translateX(-100%)' : 'none',
                 maxHeight: menuPosition.maxHeight,
-                bottom: 'auto'
             }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
